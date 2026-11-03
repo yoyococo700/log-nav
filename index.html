@@ -287,21 +287,17 @@ function layoutPage(model,page,pi,np){
   const a=P[0],b=P[P.length-1];
   let tr=a.shown+' – '+b.shown;if(np>1)tr+=`   (page ${pi+1}/${np})`;
   items.push({x:44,y:228,s:tr,size:fitOne(tr,880,34,18),al:'l'});
-  if(decl!=null&&!isNaN(decl)){
-    const d=Math.round(decl*10)/10,s=fmt1(Math.abs(d))+'°'+(d<0?'W':'E');
-    items.push({x:658,y:572,s,size:fitOne(s,76,28,16),al:'c'});
-  }
   /* points */
   page.pts.forEach((p,i)=>{
     const[y0,y1]=WP_ROWS[i];
     const f=fitLines([p.shown],WP_W,y1-y0-6,32,16);
     putBlock(items,f,WP_X0,y0,y1);
     if(p.fq.length){
-      const best=h=>{const A=fitLines(p.fq,FQ_W,h,30,15),B=fitLines([p.fq.join(' · ')],FQ_W,h,30,15);return B.size>=A.size?B:A};
+      const best=h=>{const A=fitLines(p.fq,FQ_W,h,22,13),B=fitLines([p.fq.join(' · ')],FQ_W,h,22,13);return B.size>=A.size?B:A};
       const f=best(y1-y0-6);
       /* si le texte devient trop petit, il déborde dans la colonne libre en face de la branche suivante */
       const more=i<LEG_ROWS.length?LEG_ROWS[i][1]-LEG_ROWS[i][0]-8:0;
-      if(f.size<26&&more>0){const g=best(y1-y0-6+more);if(g.size>f.size){putBlock(items,g,FQ_X0,y0+3,y0+3+g.lines.length*g.size*1.15);return}}
+      if(f.size<18&&more>0){const g=best(y1-y0-6+more);if(g.size>f.size){putBlock(items,g,FQ_X0,y0+3,y0+3+g.lines.length*g.size*1.15);return}}
       putBlock(items,f,FQ_X0,y0,y1);
     }
   });
